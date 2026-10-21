@@ -26,17 +26,25 @@
     background: #1f2125;
     border-bottom: 1px solid #2f3238;
   }
+  
+  /* Logo oficial do Roblox */
   .logo-icon {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     background: #fff;
     transform: rotate(15deg);
-    border-radius: 3px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   }
-  .logo-icon svg { width: 16px; height: 16px; fill: #1f2125; }
+  .logo-icon .inner {
+    width: 10px;
+    height: 10px;
+    background: #1f2125;
+    border-radius: 1px;
+  }
   
   .top-actions { display: flex; gap: 10px; align-items: center; }
   .btn-top {
@@ -219,8 +227,9 @@
 <body>
 
   <div class="topbar">
+    <!-- Logo do Roblox corrigido -->
     <div class="logo-icon">
-      <svg viewBox="0 0 100 100"><path d="M10 10 L90 10 L90 90 L10 90 Z M30 30 L30 70 L70 70 L70 30 Z"/></svg>
+      <div class="inner"></div>
     </div>
     <div class="top-actions">
       <a href="#" class="btn-top btn-blue">Cadastrar-se</a>
